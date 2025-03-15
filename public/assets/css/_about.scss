@@ -1,0 +1,214 @@
+.page-container {
+  font-family: 'Roboto', sans-serif;
+  width: 90%;
+  margin: auto;
+  padding: 48px 0px;
+  min-height: 90vh;
+  text-align: center;
+  color: #2c2c2c;
+  .about-details,
+  .my-workplace,
+  .my-companies {
+    padding: 48px 0px;
+  }
+  .page-title {
+    h1 {
+      font-weight: 500;
+      font-size: 30px;
+      text-decoration: underline;
+    }
+  }
+  .about-details-content p {
+    text-align: left;
+    font-weight: 500;
+  }
+  .about-details {
+    img {
+      margin-bottom: 24px;
+    }
+    h2 {
+      font-size: 24px;
+      font-weight: 500;
+    }
+    h3 {
+      padding: 16px 0px;
+      font-weight: 500;
+    }
+    p {
+      padding: 0 96px;
+      font-weight: 500;
+      line-height: 1.6;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .about-details-content {
+      span {
+      font-weight: 900;
+      }
+      .highlighted {
+      background: linear-gradient(to right, #252F3E 20% ,#FF9900);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      }
+    }
+  }
+  .my-workplace {
+    h2 {
+      font-size: 30px;
+      font-weight: 500;
+    }
+    img {
+      transform: scale(1);
+      transition: all 300ms ease-in-out;
+    }
+    img:hover {
+      scale: 1.05;
+    }
+    h3 {
+      padding: 16px 0px;
+      font-weight: 500;
+    }
+    .workplace-details {
+      padding: 24px 0px;
+      img {
+        width: 200px;
+      }
+      h4 {
+        font-weight: 500;
+      }
+      h5 {
+        font-weight: 500;
+        padding: 8px 0px;
+      }
+      p {
+        padding: 24px 96px;
+        font-weight: 500;
+        line-height: 1.6;
+        font-size: 18px;
+      }
+    }
+    .child-workplace {
+        padding: 24px 0px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      .child-work-place {
+        flex: calc((100% - 2rem) / 3);
+        box-sizing: border-box;
+        border-radius: 2rem;
+        padding: 4rem 4rem;
+        box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+        transform: scale(1);
+        transition: all 300ms ease-in-out;
+      }
+      .child-work-place:hover {
+        scale: 1.02;
+      }
+      .first-child-workplace img {
+        background-color: black;
+        border-radius: 8px;
+        width: 120px;
+      }
+      .second-child-workplace img {
+        width: 150px;
+        height: 45px;
+      }
+      .thired-child-workplace img {
+        width: 60px;
+      }
+      h4 {
+        font-weight: 500;
+      }
+      h5 {
+        padding: 8px 0px;
+        font-weight: 500;
+      }
+      p {
+        padding: 16px 0px;
+        font-weight: 500;
+        line-height: 1.6;
+        font-size: 18px;
+      }
+    }
+  }
+  .my-companies {
+    h2 {
+      font-size: 30px;
+      font-weight: 500;
+    }
+    h3 {
+      padding: 16px 0px;
+      font-weight: 500;
+    }
+    h4 {
+      font-weight: 500;
+    }
+    .companies-details {
+      img {
+        width: 200px;
+        transform: scale(1);
+        transition: all 300ms ease-in-out;
+      }
+      img:hover {
+        scale: 1.05;
+      }
+      padding: 24px 0px;
+      h5 {
+        padding: 8px 0px;
+        font-weight: 500;
+      }
+      p {
+        padding: 24px 96px;
+        font-weight: 500;
+        line-height: 1.6;
+        font-size: 18px;
+      }
+    }
+    .child-companies {
+      padding: 24px 0px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      .child-company {
+        border-radius: 2rem;
+        padding: 4rem 4rem;
+        box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+        transform: scale(1);
+        transition: all 300ms ease-in-out;
+        flex: calc((100% - 2rem) / 3);
+        box-sizing: border-box;
+      }
+      .child-company:hover {
+        scale: 1.02;
+      }
+      h5 {
+        padding: 8px 0px;
+        font-weight: 500;
+      }
+      img {
+        width: 120px;
+        border-radius: 100%;
+        transform: scale(1);
+        transition: all 300ms ease-in-out;
+      }
+      svg {
+        transform: scale(1);
+        transition: all 300ms ease-in-out;
+        width: 120px;
+        height: 120px;
+        border-radius: 100%;
+      }
+      img:hover {
+        scale: 1.05;
+      }
+      svg:hover {
+        scale: 1.05;
+      }
+      p {
+        padding: 16px 0px;
+        line-height: 1.6;
+        font-size: 20px;
+      }
+    }
+  }
+}

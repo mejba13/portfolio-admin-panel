@@ -1,0 +1,199 @@
+.main-head {
+  width: 95%;
+  margin: 0 0 0 auto;
+}
+
+nav {
+  @include flex(space-between, center, row);
+  min-height: 10vh;
+  width: 100%;
+  flex-wrap: wrap;
+  .logo {
+    @include flex(flex-start, center, row);
+    flex: 1 1 24rem;
+    h1 {
+      font-weight: 900;
+      margin: 1rem;
+      color: #2c2c2c;
+      text-align: center;
+      @include flex(center, center, column);
+      font-size: 3rem;
+      span:nth-child(2) {
+        background: linear-gradient(to right,  #FF9900 80%, #252F3E);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+    img {
+      width: 98px;
+    }
+  }
+  ul {
+    @include flex(space-around, center, row);
+    flex: 1 1 40rem;
+    font-weight: 500;
+  }
+}
+
+.intro {
+  min-height: 90vh;
+  color: #2c2c2c;
+  width: 90%;
+  margin: auto;
+  flex-wrap: wrap;
+  @include flex(space-between, center, row);
+  h2 {
+    font-size: 3.5rem;
+    color: #fff;
+    border-radius: 0.8rem;
+    padding: 2rem;
+    font-weight: 500;
+  }
+  .author-name {
+    position: relative;
+    background: -webkit-linear-gradient(left, #38d39f, #38a4d3);
+    border-radius: 8px;
+    display: inline-block;
+    min-height: 65px;
+  }
+  .author-name span {
+    position: absolute;
+    bottom: 6px;
+    font-style: italic;
+    right: 24px;
+    font-weight: bold;
+    font-size: 12px;
+  }
+  h3 {
+    font-size: 4rem;
+    font-weight: 900;
+    padding: 4rem 0rem 0rem 0rem;
+    line-height: 44px;
+    span{
+      background: linear-gradient(to right,  #FF9900 70%, #252F3E);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 900;
+    }
+
+      .software-engineer {
+        background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          font-weight: 900;
+      }
+
+      .cybersecurity-engineer {
+          background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          font-weight: 900;
+      }
+
+      .cloud-devops-engineer {
+        background: linear-gradient(to right,  #FF9900 80%, #252F3E);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          font-weight: 900;
+      }
+  }
+  p {
+    padding-top: 2rem;
+    color: $gray-text;
+    font-weight: 500;
+    line-height: 1.4;
+    font-size: 24px;
+    font-family: 'Helvetica Neue', sans-serif;
+    letter-spacing: -0.4px;
+    text-align: left;
+    strong {
+      font-weight: 900;
+    }
+    a {
+        text-decoration: underline;
+    }
+  }
+}
+
+.splash {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  height: 100%;
+  z-index: -1;
+}
+
+.intro-social {
+  margin-top: 4rem;
+  a {
+    margin-right: 1.5rem;
+    transition: all 300ms ease-in-out;
+  }
+  a:hover {
+    opacity: 0.8;
+  }
+  svg {
+    border-radius: 10px;
+    stroke: #fff;
+    width: 58px;
+    height: 58px;
+    fill: #fff;
+    padding: 8px;
+    background: -webkit-linear-gradient(left, #38d39f, #38a4d3);
+  }
+}
+
+.active {
+  background: $gray-text;
+  color: white;
+  padding: 1rem 3rem;
+  border-radius: 2rem;
+}
+
+.intro-text,
+.intro-images {
+  flex: 1 1 40rem;
+}
+
+#plant-left {
+  animation: plant 1.5s ease infinite alternate;
+}
+#plant-right {
+  animation: plant 1.5s ease infinite alternate 0.5s;
+}
+
+#me {
+  animation: me 1s ease infinite alternate;
+  transform-origin: bottom;
+}
+#clock-arrow {
+  animation: clock 1.5s infinite linear;
+  transform-box: fill-box;
+  transform-origin: bottom;
+}
+
+@keyframes me {
+  from {
+    transform: rotateZ(-5deg);
+  }
+  to {
+    transform: rotateZ(5deg);
+  }
+}
+
+@keyframes plant {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-30%);
+  }
+}
+@keyframes clock {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}

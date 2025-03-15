@@ -1,0 +1,75 @@
+.contact-section {
+    font-family: 'Roboto', sans-serif;
+  min-height: 80vh;
+  color: #2c2c2c;
+  width: 90%;
+  margin: auto;
+  padding: 48px 0px;
+  .page-page-title h2 {
+    font-size: 30px;
+    text-decoration: underline;
+    text-align: center;
+    font-weight: 500;
+  }
+  .contact-content {
+    text-align: center;
+    padding: 48px 0px;
+    ul {
+      @include flex(space-evenly, center, row);
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+      li {
+        border-radius: 10px;
+        margin: 12px 0px;
+        background: rgb(21, 67, 83);
+        padding: 16px 8px;
+        transition: all 300ms ease-in-out;
+        transform: scale(1);
+        min-width: 45%;
+        a {
+          color: #fff;
+          padding: 0px 24px;
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          svg {
+            border-radius: 10px;
+            stroke: #fff;
+            width: 58px;
+            height: 58px;
+            fill: #fff;
+            padding: 8px;
+            background: -webkit-linear-gradient(left, #38d39f, #38a4d3);
+            margin-right: 12px;
+          }
+        }
+      }
+    }
+    ul li:hover {
+      transform: scale(1.01);
+    }
+    button {
+      background: -webkit-linear-gradient(left, #38d39f, #38a4d3);
+      border: none;
+      border-radius: 10px;
+      min-width: 500px;
+      padding: 24px 24px;
+      transition: all 300ms ease-in-out;
+      transform: scale(1);
+      a {
+        @include flex(center, center, row);
+      }
+      svg {
+        stroke: #2c2c2c;
+        width: 32px;
+        height: 32px;
+        fill: #2c2c2c;
+        padding: 4px;
+        margin-right: 8px;
+      }
+    }
+    button:hover {
+      transform: scale(1.01);
+    }
+  }
+}
