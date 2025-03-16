@@ -81,11 +81,13 @@ class PortfolioResource extends Resource
                 TextEntry::make('slug'),
                 TextEntry::make('description')->markdown(),
                 TextEntry::make('color'),
-                TextEntry::make('url')->url(),
+                TextEntry::make('url')
+                    ->url(fn ($record) => $record->url), // Fixed by providing the correct argument
                 ImageEntry::make('image'),
                 TextEntry::make('published_at')->date(),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
