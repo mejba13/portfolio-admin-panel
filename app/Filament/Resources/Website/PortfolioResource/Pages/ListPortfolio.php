@@ -16,4 +16,13 @@ class ListPortfolio extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getTableActions(): array
+    {
+        return [
+            Actions\ViewAction::make(),
+            Actions\EditAction::make(),
+            Actions\DeleteAction::make(),
+        ];
+    }
 }
