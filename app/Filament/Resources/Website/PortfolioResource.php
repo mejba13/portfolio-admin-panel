@@ -81,13 +81,11 @@ class PortfolioResource extends Resource
                 TextEntry::make('slug'),
                 TextEntry::make('description')->markdown(),
                 TextEntry::make('color'),
-                TextEntry::make('url')
-                    ->url(fn ($record) => $record->url), // Fixed by providing the correct argument
+                TextEntry::make('url')->url(),
                 ImageEntry::make('image'),
                 TextEntry::make('published_at')->date(),
             ]);
     }
-
 
     public static function table(Table $table): Table
     {
@@ -96,9 +94,12 @@ class PortfolioResource extends Resource
                 Tables\Columns\ImageColumn::make('image')
                     ->height('60px'),
                 Tables\Columns\TextColumn::make('title')
+                    ->limit(30)
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('slug')->toggleable(),
+                Tables\Columns\TextColumn::make('slug')
+                    ->limit(30)
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('url')
                     ->limit(30)
                     ->toggleable(),
