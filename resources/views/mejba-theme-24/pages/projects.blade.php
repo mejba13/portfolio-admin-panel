@@ -1,4 +1,5 @@
-﻿@extends('mejba-theme-24.layouts.master')
+﻿@php use Illuminate\Support\Facades\Storage; @endphp
+@extends('mejba-theme-24.layouts.master')
 
 @section('title', $metaTitle)
 
@@ -42,6 +43,30 @@
     <div class="project-page-title">
         <h3>Check Out Some Awesome Projects (latest)</h3>
     </div>
+
+    <div class="project-list">
+        @foreach($portfolios as $portfolio)
+            <div class="item">
+                @php
+                    // Determine image path for local storage
+                    $imagePath = asset('storage/' . $portfolio->image);
+
+                    // If using Vite, uncomment the line below (ensure image is in `resources/images/`)
+                    // $imagePath = Vite::asset('resources/images/' . $portfolio->image);
+                @endphp
+
+                <img src="{{ $imagePath }}" alt="{{ $portfolio->title }}" />
+                <div class="item-content">
+                    <h4>
+                        <a target="_blank" href="{{ $portfolio->url }}">{{ $portfolio->title }}</a>
+                    </h4>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+
+
     <div class="project-list">
       <div class="item">
         <img src=" {{ asset('assets/images/projects/website/lens-aid.png') }} " alt="Lens Aid" />
