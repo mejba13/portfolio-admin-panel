@@ -11,8 +11,8 @@ class Login extends BasePage
         parent::mount();
 
         $this->form->fill([
-            'email' => 'admin@filamentphp.com',
-            'password' => 'password',
+            'email' => 'hi@mejba.me',
+            'password' => 'Engr@2025',
             'remember' => true,
         ]);
     }

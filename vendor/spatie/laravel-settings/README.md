@@ -1,6 +1,3 @@
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
-
 # Store strongly typed application settings
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-settings.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-settings)
@@ -97,7 +94,7 @@ return [
 
     /*
      * Each settings class used in your application must be registered, you can
-     * add them (manually) here.
+     * put them (manually) here.
      */
     'settings' => [
 
@@ -109,7 +106,7 @@ return [
     'setting_class_path' => app_path('Settings'),
 
     /*
-     * In these directories settings migrations will be stored and ran when migrating. A settings 
+     * In these directories settings migrations will be stored and ran when migrating. A settings
      * migration created via the make:settings-migration command will be stored in the first path or
      * a custom defined path when running the command.
      */
@@ -118,7 +115,7 @@ return [
     ],
 
     /*
-     * When no repository is set for a settings class, the following repository
+     * When no repository was set for a settings class the following repository
      * will be used for loading and saving settings.
      */
     'default_repository' => 'database',
@@ -157,11 +154,12 @@ return [
         'enabled' => env('SETTINGS_CACHE_ENABLED', false),
         'store' => null,
         'prefix' => null,
+        'ttl' => null,
     ],
 
     /*
      * These global casts will be automatically used whenever a property within
-     * your settings class isn't the default PHP type.
+     * your settings class isn't a default PHP type.
      */
     'global_casts' => [
         DateTimeInterface::class => Spatie\LaravelSettings\SettingsCasts\DateTimeInterfaceCast::class,
@@ -240,7 +238,7 @@ This command will create a new file in `database/settings` where you can add the
 ```php
 use Spatie\LaravelSettings\Migrations\SettingsMigration;
 
-class CreateGeneralSettings extends SettingsMigration
+return new class extends SettingsMigration
 {
     public function up(): void
     {
@@ -256,6 +254,17 @@ You should migrate your database to add the properties:
 
 ```bash
 php artisan migrate
+```
+
+Without the migration, if you try to load the `GeneralSettings` settings class, it will throw `MissingSettings` exception. To avoid this, you can define default values for each attribute. This can be useful if you have long-running migrations.
+
+```php
+    // Will throw an error
+    public ?string $site_name;
+    // Will return `null`
+    public ?string $site_description = null;
+    // Will return `false`
+    public bool $site_active = false;
 ```
 
 Now, when you want to use the `site_name` property of the `GeneralSettings` settings class, you can inject it into your application:

@@ -9,4 +9,4 @@
 {{--    />--}}
 {{--</svg>--}}
 
-<img src="https://s3.us-east-1.amazonaws.com/mejba.me/mejba-color-pic.jpg" alt="Engr Mejba Ahmed">
+<img style="height: 2.5rem;border-radius: 100px;" src="https://s3.us-east-1.amazonaws.com/mejba.me/mejba-color-pic.jpg" alt="Engr Mejba Ahmed">

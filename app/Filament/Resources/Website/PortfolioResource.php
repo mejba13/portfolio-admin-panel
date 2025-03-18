@@ -64,13 +64,20 @@ class PortfolioResource extends Resource
                         ->label('Published Date'),
                 ])->columns(2),
 
-                Forms\Components\Section::make('Portfolio Image')->schema([
-                    Forms\Components\FileUpload::make('image')
-                        ->image()
-                        ->directory('portfolio-images')
-                        ->required()
-                        ->columnSpanFull(),
-                ])->collapsible(),
+//                Forms\Components\FileUpload::make('image')
+//                    ->image()
+//                    ->disk('s3') // Store in S3
+//                    ->directory('portfolio-images') // Folder in S3
+//                    ->visibility('public') // Ensure it's publicly accessible
+//                    ->required()
+//                    ->columnSpanFull(),
+
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->directory('portfolio-images')
+                    ->required()
+                    ->columnSpanFull(),
+
             ]);
     }
 

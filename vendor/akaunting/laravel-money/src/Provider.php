@@ -36,23 +36,21 @@ class Provider extends ServiceProvider
 
     public function registerValidationRules(): void
     {
-        $currency_code = null;
-
-        Validator::extend('currency_code', function ($attribute, $value, $parameters, $validator) use(&$currency_code) {
+        Validator::extend('currency_code', function (mixed $attribute, string $value, mixed $parameters, mixed $validator) {
             $status = false;
 
-            $currency_code = $value;
-
-            $currencies = config('money.currencies');
+            $currencies = (array) config('money.currencies');
 
             if (array_key_exists($value, $currencies)) {
                 $status = true;
             }
 
             return $status;
-        },
-            trans('validation.custom.invalid_currency', ['attribute' => $currency_code])
-        );
+        });
+
+        Validator::replacer('currency_code', function (mixed $message, mixed $attribute, mixed $rule, mixed $parameters) {
+            return trans('validation.custom.invalid_currency', ['attribute' => $attribute]);
+        });
     }
 
     public function registerBladeDirectives(): void

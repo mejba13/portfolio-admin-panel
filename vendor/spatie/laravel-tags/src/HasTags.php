@@ -20,6 +20,25 @@ trait HasTags
         return config('tags.tag_model', Tag::class);
     }
 
+    public static function getTagTableName(): string
+    {
+        $tagInstance = new (self::getTagClassName());
+
+        return $tagInstance->getTable();
+    }
+
+    public static function getTagTablePrimaryKeyName(): string
+    {
+        return self::getTagTableName() . '.' . self::getTagPrimaryKey();
+    }
+
+    public static function getTagPrimaryKey(): string
+    {
+        $tagInstance = new (self::getTagClassName());
+
+        return $tagInstance->getKeyName();
+    }
+
     public function getTaggableMorphName(): string
     {
         return config('tags.taggable.morph_name', 'taggable');
@@ -89,13 +108,13 @@ trait HasTags
     public function scopeWithAllTags(
         Builder $query,
         string | array | ArrayAccess | Tag $tags,
-        string $type = null,
+        ?string $type = null,
     ): Builder {
         $tags = static::convertToTags($tags, $type);
 
         collect($tags)->each(function ($tag) use ($query) {
             $query->whereHas('tags', function (Builder $query) use ($tag) {
-                $query->where('tags.id', $tag->id ?? 0);
+                $query->where(self::getTagTablePrimaryKeyName(), $tag->id ?? 0);
             });
         });
 
@@ -105,7 +124,7 @@ trait HasTags
     public function scopeWithAnyTags(
         Builder $query,
         string | array | ArrayAccess | Tag $tags,
-        string $type = null,
+        ?string $type = null,
     ): Builder {
         $tags = static::convertToTags($tags, $type);
 
@@ -113,14 +132,14 @@ trait HasTags
             ->whereHas('tags', function (Builder $query) use ($tags) {
                 $tagIds = collect($tags)->pluck('id');
 
-                $query->whereIn('tags.id', $tagIds);
+                $query->whereIn(self::getTagTablePrimaryKeyName(), $tagIds);
             });
     }
 
     public function scopeWithoutTags(
         Builder $query,
         string | array | ArrayAccess | Tag $tags,
-        string $type = null
+        ?string $type = null
     ): Builder {
         $tags = static::convertToTags($tags, $type);
 
@@ -128,7 +147,7 @@ trait HasTags
             ->whereDoesntHave('tags', function (Builder $query) use ($tags) {
                 $tagIds = collect($tags)->pluck('id');
 
-                $query->whereIn('tags.id', $tagIds);
+                $query->whereIn(self::getTagTablePrimaryKeyName(), $tagIds);
             });
     }
 
@@ -140,7 +159,7 @@ trait HasTags
             ->each(function ($tag) use ($query) {
                 $query->whereHas(
                     'tags',
-                    fn (Builder $query) => $query->where('tags.id', $tag ? $tag->id : 0)
+                    fn (Builder $query) => $query->where(self::getTagTablePrimaryKeyName(), $tag ? $tag->id : 0)
                 );
             });
 
@@ -155,16 +174,24 @@ trait HasTags
 
         return $query->whereHas(
             'tags',
-            fn (Builder $query) => $query->whereIn('tags.id', $tagIds)
+            fn (Builder $query) => $query->whereIn(self::getTagTablePrimaryKeyName(), $tagIds)
         );
     }
 
-    public function tagsWithType(string $type = null): Collection
+    public function scopeWithAnyTagsOfType(Builder $query, string|array $type): Builder
+    {
+        return $query->whereHas(
+            'tags',
+            fn (Builder $query) => $query->whereIn('type', (array) $type)
+        );
+    }
+
+    public function tagsWithType(?string $type = null): Collection
     {
         return $this->tags->filter(fn (Tag $tag) => $tag->type === $type);
     }
 
-    public function attachTags(array | ArrayAccess | Tag $tags, string $type = null): static
+    public function attachTags(array | ArrayAccess | Tag $tags, ?string $type = null): static
     {
         $className = static::getTagClassName();
 
@@ -269,7 +296,7 @@ trait HasTags
             ->where($this->getTaggableMorphName() . '_type', $this->getMorphClass())
             ->join(
                 $tagModel->getTable(),
-                'taggables.tag_id',
+                $this->getTaggableTableName() . '.tag_id',
                 '=',
                 $tagModel->getTable() . '.' . $tagModel->getKeyName()
             )
@@ -287,9 +314,8 @@ trait HasTags
         // Attach any new ids
         $attach = array_unique(array_diff($ids, $current));
         if (count($attach) > 0) {
-            collect($attach)->each(function ($id) {
-                $this->tags()->attach($id, []);
-            });
+            $this->tags()->attach($attach, []);
+
             $isUpdated = true;
         }
 
@@ -301,7 +327,7 @@ trait HasTags
         }
     }
 
-    public function hasTag($tag, string $type = null): bool
+    public function hasTag($tag, ?string $type = null): bool
     {
         return $this->tags
             ->when($type !== null, fn ($query) => $query->where('type', $type))

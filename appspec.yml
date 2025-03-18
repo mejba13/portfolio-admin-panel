@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/html/
+    overwrite: true
+
+file_exists_behavior: OVERWRITE
+
+hooks:
+  BeforeInstall:
+    - location: devops/before_install.sh
+      timeout: 600
+      runas: root
+  AfterInstall:
+    - location: devops/after_install.sh
+      timeout: 600
+      runas: root

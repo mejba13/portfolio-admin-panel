@@ -23,6 +23,9 @@ class ConversionCollection extends Collection
         return (new static)->setMedia($media);
     }
 
+    /**
+     * @return $this
+     */
     public function setMedia(Media $media): self
     {
         $this->media = $media;
@@ -38,9 +41,7 @@ class ConversionCollection extends Collection
 
     public function getByName(string $name): Conversion
     {
-        $conversion = $this
-            ->getConversions($this->media->collection_name)
-            ->first(fn (Conversion $conversion) => $conversion->getName() === $name);
+        $conversion = $this->first(fn (Conversion $conversion) => $conversion->getName() === $name);
 
         if (! $conversion) {
             throw InvalidConversion::unknownName($name);
@@ -78,11 +79,17 @@ class ConversionCollection extends Collection
 
     protected function addManipulationsFromDb(Media $media): void
     {
-        collect($media->manipulations)->each(function ($manipulation, $conversionName) {
+        collect(Arr::except($media->manipulations, '*'))->each(function ($manipulation, $conversionName) {
             $manipulations = new Manipulations($manipulation);
 
             $this->addManipulationToConversion($manipulations, $conversionName);
         });
+
+        if (array_key_exists('*', $media->manipulations)) {
+            $globalManipulations = new Manipulations($media->manipulations['*']);
+
+            $this->addManipulationToConversion($globalManipulations, '*');
+        }
     }
 
     public function getConversions(string $collectionName = ''): self
@@ -91,9 +98,7 @@ class ConversionCollection extends Collection
             return $this;
         }
 
-        return $this
-            ->filter(fn (Conversion $conversion) => $conversion->shouldBePerformedOn($collectionName))
-            ->values();
+        return $this->filter(fn (Conversion $conversion) => $conversion->shouldBePerformedOn($collectionName));
     }
 
     protected function addManipulationToConversion(Manipulations $manipulations, string $conversionName): void
@@ -117,7 +122,7 @@ class ConversionCollection extends Collection
 
         if ($conversionName === '*') {
             $this->each(
-                fn (Conversion $conversion) => $conversion->addAsFirstManipulations(clone $manipulations),
+                fn (Conversion $conversion) => $conversion->addAsFirstManipulations(clone $manipulations)
             );
         }
     }
