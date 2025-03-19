@@ -37,7 +37,7 @@ class PagesController extends Controller
 
         // Fetch all portfolio items from the database
         $categories = Category::all();
-        $portfolios = Portfolio::latest()->get();
+        $portfolios = Portfolio::latest()->paginate(15);
 
         return view('mejba-theme-24.pages.projects', compact('metaTitle', 'metaDescription', 'portfolios','categories'));
     }

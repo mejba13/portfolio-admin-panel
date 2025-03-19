@@ -123,7 +123,9 @@
         <div class="project-card">
             <h1 class="project-title">{{ $project->title }}</h1>
             <p class="project-meta"><strong>Category:</strong> {{ $project->category->name }}</p>
-            <p class="project-meta"><strong>Published At:</strong> {{ $project->published_at->format('M d, Y') }}</p>
+            @if($project->published_at)
+                <p class="project-meta"><strong>Published At:</strong> {{ $project->published_at->format('M d, Y') }}</p>
+            @endif
 
             <div class="project-image">
                 <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">

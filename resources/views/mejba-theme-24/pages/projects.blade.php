@@ -143,6 +143,53 @@
             margin-top: 5px;
         }
 
+        .pagination-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pagination li {
+            margin: 5px;
+        }
+
+        .pagination a, .pagination span {
+            display: inline-block;
+            padding: 10px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .pagination a {
+            background: #f8f9fa;
+            color: #333;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .pagination a:hover {
+            background: linear-gradient(to right, #38d39f, #38a4d3);
+            color: white;
+        }
+
+        .pagination .active span {
+            background: linear-gradient(to right, #38d39f, #38a4d3)!important;
+            color: white;
+            font-weight: bold;
+            padding: 12px 18px;
+        }
+
+
         /* 📱 Responsive Design */
         @media (max-width: 768px) {
             .category-tabs {
@@ -158,8 +205,6 @@
             <h2>Projects</h2>
             <p class="project-subheading">Explore my work across different categories. Select a tab to filter projects.</p>
         </div>
-
-        @if (app()->environment('local'))
 
             <!-- 🏷️ Category Tabs -->
             <div class="category-tabs">
@@ -191,10 +236,12 @@
                     </div>
                 @endforeach
             </div>
-
-        @endif
-
     </section>
+
+    <!-- ✅ Laravel Pagination Links -->
+    <div class="pagination-container">
+        {{ $portfolios->links('vendor.pagination.bootstrap-4') }}
+    </div>
 
     <!-- 🏷️ JavaScript for Filtering -->
     <script>
