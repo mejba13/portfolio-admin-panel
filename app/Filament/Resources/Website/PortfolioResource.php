@@ -57,7 +57,6 @@ class PortfolioResource extends Resource
                     Forms\Components\TextInput::make('url')
                         ->label('Project URL')
                         ->url()
-                        ->required()
                         ->maxLength(255),
 
                     Forms\Components\DatePicker::make('published_at')

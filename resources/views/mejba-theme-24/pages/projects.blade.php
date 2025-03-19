@@ -11,6 +11,34 @@
     <div class="project-page-title">
       <h2>Projects</h2>
     </div>
+
+    @if (app()->environment('local'))
+
+        <div class="project-list">
+            @foreach($portfolios as $portfolio)
+                <div class="item">
+                    @php
+                        // Determine the image path dynamically for local & S3 storage
+                        $imagePath = $portfolio->image
+                            ? asset('storage/' . $portfolio->image) // Local storage
+                            : 'https://via.placeholder.com/300'; // Placeholder image if none is available
+                    @endphp
+
+                    <img src="{{ $imagePath }}" alt="{{ $portfolio->title }}" loading="lazy" />
+
+                    <div class="item-content">
+                        <h4>
+                            <a href="{{ route('project.show', ['slug' => $portfolio->slug]) }}">
+                                {{ $portfolio->title }}
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+    @endif
+
     <div class="project-page-title">
         <h3>Achievements That Define My Professional Growth</h3>
     </div>
@@ -43,30 +71,6 @@
     <div class="project-page-title">
         <h3>Check Out Some Awesome Projects (latest)</h3>
     </div>
-
-    <div class="project-list">
-        @foreach($portfolios as $portfolio)
-            <div class="item">
-                @php
-                    // Determine image path for local storage
-                    $imagePath = asset('storage/' . $portfolio->image);
-
-                    // If using Vite, uncomment the line below (ensure image is in `resources/images/`)
-                    // $imagePath = Vite::asset('resources/images/' . $portfolio->image);
-                @endphp
-
-                <img src="{{ $imagePath }}" alt="{{ $portfolio->title }}" />
-                <div class="item-content">
-                    <h4>
-                        <a target="_blank" href="{{ $portfolio->url }}">{{ $portfolio->title }}</a>
-                    </h4>
-                </div>
-            </div>
-        @endforeach
-    </div>
-
-
-
     <div class="project-list">
       <div class="item">
         <img src=" {{ asset('assets/images/projects/website/lens-aid.png') }} " alt="Lens Aid" />

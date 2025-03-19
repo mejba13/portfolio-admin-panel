@@ -13,6 +13,7 @@ Route::get('/', [PagesController::class, 'index'])->name('home');
 
 Route::get('/about-me/', [PagesController::class, 'about'])->name('about');
 Route::get('/projects/', [PagesController::class, 'projects'])->name('project');
+Route::get('/project/{slug}', [PagesController::class, 'projectDetails'])->name('project.show');
 Route::get('/contact/', [PagesController::class, 'contact'])->name('contact');
 
 

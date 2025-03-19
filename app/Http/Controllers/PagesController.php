@@ -40,6 +40,13 @@ class PagesController extends Controller
         return view('mejba-theme-24.pages.projects', compact('metaTitle', 'metaDescription', 'portfolios'));
     }
 
+    public function projectDetails($slug)
+    {
+        $project = Portfolio::where('slug', $slug)->firstOrFail(); // Rename Portfolio if needed
+
+        return view('mejba-theme-24.pages.project-details', compact('project'));
+    }
+
 
     // Contact us page
     public function contact()
