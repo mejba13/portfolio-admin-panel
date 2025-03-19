@@ -7,6 +7,37 @@
 
 @section('content')
 
+    <style>
+        /* Styles for category tabs */
+        nav {
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+            /* Light subtle shadow */
+            background: white;
+            position: relative;
+            z-index: 10;
+        }
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 10px 15px;
+            border-radius: 20px;
+            background: #f3f3f3;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .category-tab.active {
+            background: #ff6b6b;
+            color: white;
+        }
+    </style>
+
 <section class="projects">
     <div class="project-page-title">
       <h2>Projects</h2>
@@ -14,24 +45,32 @@
 
     @if (app()->environment('local'))
 
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <div class="category-tab active" data-category="all">All</div>
+            @foreach($categories as $category)
+                <div class="category-tab" data-category="{{ $category->slug }}">{{ $category->name }}</div>
+            @endforeach
+        </div>
+
+        <!-- Portfolio Projects -->
         <div class="project-list">
             @foreach($portfolios as $portfolio)
-                <div class="item">
-                    @php
-                        // Determine the image path dynamically for local & S3 storage
-                        $imagePath = $portfolio->image
-                            ? asset('storage/' . $portfolio->image) // Local storage
-                            : 'https://via.placeholder.com/300'; // Placeholder image if none is available
-                    @endphp
+                @php
+                    $imagePath = $portfolio->image
+                        ? asset('storage/' . $portfolio->image)
+                        : 'https://via.placeholder.com/300';
+                @endphp
 
+                <div class="item" data-category="{{ $portfolio->category->slug }}">
                     <img src="{{ $imagePath }}" alt="{{ $portfolio->title }}" loading="lazy" />
-
                     <div class="item-content">
                         <h4>
                             <a href="{{ route('project.show', ['slug' => $portfolio->slug]) }}">
                                 {{ $portfolio->title }}
                             </a>
                         </h4>
+                        <p><strong>Category:</strong> {{ $portfolio->category->name }}</p>
                     </div>
                 </div>
             @endforeach
@@ -375,5 +414,30 @@
     </div>
   </section>
 
+<!-- JavaScript for Filtering -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tabs = document.querySelectorAll(".category-tab");
+        const projects = document.querySelectorAll(".item");
 
-    @endsection
+        tabs.forEach(tab => {
+            tab.addEventListener("click", function() {
+                tabs.forEach(t => t.classList.remove("active"));
+                this.classList.add("active");
+
+                const selectedCategory = this.getAttribute("data-category");
+
+                projects.forEach(project => {
+                    if (selectedCategory === "all" || project.getAttribute("data-category") === selectedCategory) {
+                        project.style.display = "block";
+                    } else {
+                        project.style.display = "none";
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+
+@endsection
