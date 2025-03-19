@@ -2,442 +2,223 @@
 @extends('mejba-theme-24.layouts.master')
 
 @section('title', $metaTitle)
-
 @section('meta_description', $metaDescription)
 
 @section('content')
 
     <style>
-        /* Styles for category tabs */
+        /* 🏗️ Navigation Bar with Light Dark Shadow */
         nav {
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
-            /* Light subtle shadow */
             background: white;
             position: relative;
             z-index: 10;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+            padding-bottom: 10px;
         }
+
+        /* 📌 Project Section Styling */
+        .projects {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .project-page-title h2 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .project-subheading {
+            font-size: 18px;
+            font-weight: 500;
+            color: #555;
+            margin-top: 5px;
+            margin-bottom: 25px;
+        }
+
+        /* 🏷️ Category Tabs */
         .category-tabs {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            align-items: center;
             flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 30px;
         }
 
         .category-tab {
-            padding: 10px 15px;
-            border-radius: 20px;
-            background: #f3f3f3;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            background: #f8f9fa; /* Default background */
+            color: #333;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: none;
+            display: inline-block;
+            min-width: 140px;
+            text-transform: capitalize;
+            outline: none;
+        }
+
+        .category-tab:hover {
+            background: -webkit-linear-gradient(left, #38d39f, #38a4d3);
+            background: linear-gradient(to right, #38d39f, #38a4d3);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
         }
 
         .category-tab.active {
-            background: #ff6b6b;
+            background: -webkit-linear-gradient(left, #38d39f, #38a4d3);
+            background: linear-gradient(to right, #38d39f, #38a4d3);
             color: white;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
+            transform: scale(1.05);
+        }
+
+        /* 🎨 Modern Project Cards */
+        .project-list-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease-in-out;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .item-content {
+            padding: 15px 10px;
+        }
+
+        .item-content h4 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 12px;
+            color: #333;
+        }
+
+        .item-content a {
+            text-decoration: none;
+            color: #ff3b3b;
+            transition: 0.3s;
+        }
+
+        .item-content a:hover {
+            color: #c82323;
+            text-decoration: underline;
+        }
+
+        .item p {
+            font-size: 14px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        /* 📱 Responsive Design */
+        @media (max-width: 768px) {
+            .category-tabs {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
         }
     </style>
 
-<section class="projects">
-    <div class="project-page-title">
-      <h2>Projects</h2>
-    </div>
-
-    @if (app()->environment('local'))
-
-        <!-- Category Tabs -->
-        <div class="category-tabs">
-            <div class="category-tab active" data-category="all">All</div>
-            @foreach($categories as $category)
-                <div class="category-tab" data-category="{{ $category->slug }}">{{ $category->name }}</div>
-            @endforeach
+    <section class="projects">
+        <!-- Page Title & Description -->
+        <div class="project-page-title">
+            <h2>Projects</h2>
+            <p class="project-subheading">Explore my work across different categories. Select a tab to filter projects.</p>
         </div>
 
-        <!-- Portfolio Projects -->
-        <div class="project-list">
-            @foreach($portfolios as $portfolio)
-                @php
-                    $imagePath = $portfolio->image
-                        ? asset('storage/' . $portfolio->image)
-                        : 'https://via.placeholder.com/300';
-                @endphp
+        @if (app()->environment('local'))
 
-                <div class="item" data-category="{{ $portfolio->category->slug }}">
-                    <img src="{{ $imagePath }}" alt="{{ $portfolio->title }}" loading="lazy" />
-                    <div class="item-content">
-                        <h4>
-                            <a href="{{ route('project.show', ['slug' => $portfolio->slug]) }}">
-                                {{ $portfolio->title }}
-                            </a>
-                        </h4>
-                        <p><strong>Category:</strong> {{ $portfolio->category->name }}</p>
+            <!-- 🏷️ Category Tabs -->
+            <div class="category-tabs">
+                <div class="category-tab active" data-category="all">All</div>
+                @foreach($categories as $category)
+                    <div class="category-tab" data-category="{{ $category->slug }}">{{ $category->name }}</div>
+                @endforeach
+            </div>
+
+            <!-- 📌 Portfolio Projects -->
+            <div class="project-list-section">
+                @foreach($portfolios as $portfolio)
+                    @php
+                        $imagePath = $portfolio->image
+                            ? asset('storage/' . $portfolio->image)
+                            : 'https://via.placeholder.com/300';
+                    @endphp
+
+                    <div class="item" data-category="{{ $portfolio->category->slug }}">
+                        <img src="{{ $imagePath }}" alt="{{ $portfolio->title }}" loading="lazy" />
+                        <div class="item-content">
+                            <h4>
+                                <a href="{{ route('project.show', ['slug' => $portfolio->slug]) }}">
+                                    {{ $portfolio->title }}
+                                </a>
+                            </h4>
+                            <p><strong>Category:</strong> {{ $portfolio->category->name }}</p>
+                        </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
-
-    @endif
-
-    <div class="project-page-title">
-        <h3>Achievements That Define My Professional Growth</h3>
-    </div>
-    <div class="project-list">
-        <div class="item">
-            <img src="https://s3.us-east-1.amazonaws.com/mejba.me/leetcode-50-days-badge-2025.png" alt="LeetCode Badge Achievement" />
-            <div class="item-content">
-                <h4>
-                    <a target="_blank" href="https://leetcode.com/u/engrmejbaahmed/">LeetCode Badge Achievement</a>
-                </h4>
+                @endforeach
             </div>
-        </div>
-        <div class="item">
-            <img src="https://s3.us-east-1.amazonaws.com/mejba.me/aws-clf-c02-course-certificate-2025.jpg" alt="AWS Course Completion Certificate" />
-            <div class="item-content">
-                <h4>
-                    <a target="_blank" href="https://www.udemy.com/certificate/UC-885ee006-4bfe-4176-b221-2e38544aa230/">AWS Course Completion Certificate</a>
-                </h4>
-            </div>
-        </div>
-        <div class="item">
-            <img src="https://s3.us-east-1.amazonaws.com/mejba.me/aws-clf-c02-practice-exam-results-2025.PNG" alt="AWS Practice Exam Results" />
-            <div class="item-content">
-                <h4>
-                    <a target="_blank" href="https://www.udemy.com/certificate/UC-885ee006-4bfe-4176-b221-2e38544aa230/">AWS Practice Exam Results</a>
-                </h4>
-            </div>
-        </div>
-    </div>
-    <div class="project-page-title">
-        <h3>Check Out Some Awesome Projects (latest)</h3>
-    </div>
-    <div class="project-list">
-      <div class="item">
-        <img src=" {{ asset('assets/images/projects/website/lens-aid.png') }} " alt="Lens Aid" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.lens-aid.de/">Lens Aid</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src=" {{ asset('assets/images/projects/website/pentagon-tactical.png') }}"
-          alt="Pentagon Tactical"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.pentagon-tactical.com/"
-              >Pentagon Tactical</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src=" {{ asset('assets/images/projects/website/sav.png') }}" alt="Sav" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.sav.com/">Sav</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src="{{ asset('assets/images/projects/website/lemenu.png') }}" alt="Lemenu" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://lemenu.ch/de/">Lemenu</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src="{{ asset('assets/images/projects/website/strapswap.png') }}" alt="Strapswap" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://strapswap.de/">Strapswap</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src=" {{ asset('assets/images/projects/website/studiosuits.png') }}" alt="Studiosuits" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.studiosuits.com/"
-              >Studiosuits</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src=" {{ asset('assets/images/projects/website/natu-real.png') }}" alt="natu-real" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.natu-real.com/">Natu-Real</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src="{{ asset('assets/images/projects/website/21shoes.png') }}" alt="21shoes" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://21shoes.net/">21shoes</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src=" {{ asset('assets/images/projects/website/anguillasands.png') }}"
-          alt="anguillasands"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://anguillasands.com/"
-              >Anguillasands</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src=" {{ asset('assets/images/projects/website/exoracing.png') }}" alt="Exoracing" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://exoracing.co.uk/">Exoracing</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src="{{ asset('assets/images/projects/website/setjoodirectory.png') }}"
-          alt="setjoodirectory"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.setjoodirectory.com/"
-              >setjoodirectory</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src=" {{ asset('assets/images/projects/website/napolilimoservice.png') }}"
-          alt="napolilimoservice"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://napolilimoservice.com/"
-              >Naples Limousine Services</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src=" {{ asset('assets/images/projects/website/thinkhostel.png') }}" alt="thinkhostel" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://thinkhostel.com/">thinkhostel</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src="{{ asset('assets/images/projects/website/interessante-dinge.png') }}"
-          alt="interessante-dinge"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="http://interessante-dinge.de/"
-              >Interessante Dinge</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src=" {{ asset('assets/images/projects/website/plantae.png') }}" alt="plantae" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://plantae.org/">plantae</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src="{{ asset('assets/images/projects/website/wealthacademyglobal.png') }}"
-          alt="Wealth Academy Global"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.wealthacademyglobal.com/"
-              >Wealth Academy Global</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src=" {{ asset('assets/images/projects/website/everydayhealth.png') }}"
-          alt="everydayhealth"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.everydayhealth.com/"
-              >Every Day Health</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src="{{ asset('assets/images/projects/website/mississaugaimplants.png') }}"
-          alt="mississaugaimplants"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="http://www.mississaugaimplants.com/"
-              >Mississaugaimplants</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src="{{ asset('assets/images/projects/website/bottlemeamessage.png') }}"
-          alt="bottlemeamessage"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://bottlemeamessage.com/"
-              >Bottle me amessage</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src="{{ asset('assets/images/projects/website/bottlemeamessage.png') }}" alt="Sav" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://thecottageandloft.com/"
-              >thecottageandloft</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src="{{ asset('assets/images/projects/website/freshzza.png') }}" alt="freshzza" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.freshzza.com/">Freshzza</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src=" {{ asset('assets/images/projects/website/williamtotiphotography.png') }}"
-          alt="William Toti Photography Blog"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://blog.williamtotiphotography.com/"
-              >William Toti Photography Blog</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src="{{ asset('assets/images/projects/website/brookescollege.png') }}"
-          alt="BrookesCollege"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://brookescollege.ca/"
-              >Brookes College</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src="{{ asset('assets/images/projects/website/shirtinator.png') }}" alt="shirtinator" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.shirtinator.co.uk/"
-              >Shirtinator</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img src="{{ asset('assets/images/projects/website/fougen.png') }}" alt="fougen" />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://www.fougen.org/">Fougen</a>
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src="{{ asset('assets/images/projects/website/freemotionshop.png') }}"
-          alt="freemotionshop"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://freemotionshop.com/"
-              >Free Motion Shop</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src="{{ asset('assets/images/projects/website/bitcoinsidehustles.png') }}"
-          alt="bitcoinsidehustles"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://bitcoinsidehustles.com/"
-              >Bitcoin Side Hustles</a
-            >
-          </h4>
-        </div>
-      </div>
-      <div class="item">
-        <img
-          src="{{ asset('assets/images/projects/aws/aws-developer-tools-codepipeline.png') }}"
-          alt="bitcoinsidehustles"
-        />
-        <div class="item-content">
-          <h4>
-            <a target="_blank" href="https://us-east-1.console.aws.amazon.com/codesuite/home?region=us-east-1"
-              >CodePipeline</a
-            >
-          </h4>
-        </div>
-      </div>
-    </div>
-  </section>
 
-<!-- JavaScript for Filtering -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const tabs = document.querySelectorAll(".category-tab");
-        const projects = document.querySelectorAll(".item");
+        @endif
 
-        tabs.forEach(tab => {
-            tab.addEventListener("click", function() {
-                tabs.forEach(t => t.classList.remove("active"));
-                this.classList.add("active");
+    </section>
 
-                const selectedCategory = this.getAttribute("data-category");
+    <!-- 🏷️ JavaScript for Filtering -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tabs = document.querySelectorAll(".category-tab");
+            const projects = document.querySelectorAll(".item");
 
-                projects.forEach(project => {
-                    if (selectedCategory === "all" || project.getAttribute("data-category") === selectedCategory) {
-                        project.style.display = "block";
-                    } else {
-                        project.style.display = "none";
-                    }
+            tabs.forEach(tab => {
+                tab.addEventListener("click", function() {
+                    tabs.forEach(t => t.classList.remove("active"));
+                    this.classList.add("active");
+
+                    const selectedCategory = this.getAttribute("data-category");
+
+                    projects.forEach(project => {
+                        if (selectedCategory === "all" || project.getAttribute("data-category") === selectedCategory) {
+                            project.style.display = "block";
+                        } else {
+                            project.style.display = "none";
+                        }
+                    });
                 });
             });
         });
-    });
-</script>
-
+    </script>
 
 @endsection
