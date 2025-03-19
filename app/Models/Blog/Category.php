@@ -2,6 +2,7 @@
 
 namespace App\Models\Blog;
 
+use App\Models\Website\Portfolio;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -26,5 +27,10 @@ class Category extends Model
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'blog_category_id');
+    }
+
+    public function portfolios()
+    {
+        return $this->hasMany(Portfolio::class);
     }
 }

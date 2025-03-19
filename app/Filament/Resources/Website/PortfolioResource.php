@@ -61,6 +61,13 @@ class PortfolioResource extends Resource
 
                     Forms\Components\DatePicker::make('published_at')
                         ->label('Published Date'),
+
+                    Forms\Components\Select::make('category_id')
+                        ->label('Category')
+                        ->relationship('category', 'name')
+                        ->searchable()
+                        ->required(),
+
                 ])->columns(2),
 
 //                Forms\Components\FileUpload::make('image')
@@ -116,6 +123,10 @@ class PortfolioResource extends Resource
                     ->label('Published Date')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Category')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('published_at')

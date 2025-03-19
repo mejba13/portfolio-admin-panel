@@ -8,6 +8,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->nullable()->constrained('blog_categories')->onDelete('set null');
             $table->string('title');
             $table->string('slug')->unique(); // Add this
             $table->string('description', 1024)->nullable();

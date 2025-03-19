@@ -110,11 +110,11 @@
             box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
         }
     </style>
-
     <section class="project-details">
         <div class="container">
             <div class="project-card">
                 <h1 class="project-title">{{ $project->title }}</h1>
+                <p class="published-date"><strong>Category:</strong> {{ $project->category->name }}</p>
                 <p class="published-date"><strong>Published At:</strong> {{ $project->published_at->format('M d, Y') }}</p>
 
                 <div class="project-image">

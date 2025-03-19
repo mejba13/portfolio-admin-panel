@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog\Category;
 use App\Models\Website\Portfolio;
 use Illuminate\Http\Request;
 
@@ -35,9 +36,10 @@ class PagesController extends Controller
         $metaDescription = 'Discover Mejba.me, showcasing expertise in B.Sc in CSE, entrepreneurship, software engineering, and Cloud DevOps.';
 
         // Fetch all portfolio items from the database
+        $categories = Category::all();
         $portfolios = Portfolio::latest()->get();
 
-        return view('mejba-theme-24.pages.projects', compact('metaTitle', 'metaDescription', 'portfolios'));
+        return view('mejba-theme-24.pages.projects', compact('metaTitle', 'metaDescription', 'portfolios','categories'));
     }
 
     public function projectDetails($slug)
