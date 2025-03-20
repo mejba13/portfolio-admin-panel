@@ -6,7 +6,7 @@
 @section('content')
 
     <style>
-        header {
+        nav {
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
             /* Light subtle shadow */
             background: white;
@@ -148,5 +148,6 @@
             </div>
         </div>
     </section>
+
 
 @endsection

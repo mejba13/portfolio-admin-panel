@@ -47,9 +47,10 @@
             <a href="{{ url('/') }}"><h1><span>Entrepreneur | Software Engineer</span> <span>Cloud DevOps</span></h1></a>
             </div>
             <ul>
-            <li><a class="{{ request()->is('/') ? 'active' : ''}}" href="{{ url('/') }}">Home</a></li>
+{{--            <li><a class="{{ request()->is('/') ? 'active' : ''}}" href="{{ url('/') }}">Home</a></li>--}}
             <li><a class="{{ request()->is('about-me') ? 'active' : ''}}" href="{{ url('/about-me/') }}">About</a></li>
             <li><a class="{{ request()->is('projects') ? 'active' : ''}}" href="{{ url('/projects/') }}">Projects</a></li>
+                <li><a class="{{ request()->is('blog') || request()->is('blog/*') ? 'active' : ''}}" href="{{ url('/blog/') }}">Blog</a></li> <!-- Added Blog Link -->
             <li><a class="{{ request()->is('contact') ? 'active' : ''}}" href="{{ url('/contact/') }}">Contact</a></li>
             </ul>
         </nav>

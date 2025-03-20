@@ -14,6 +14,9 @@ class Post extends Model
     use HasFactory;
     use HasTags;
 
+    protected $fillable = ['title', 'slug', 'content', 'image', 'published_at', 'category_id', 'author_id'];
+
+
     /**
      * @var string
      */
